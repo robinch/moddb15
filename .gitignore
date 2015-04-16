@@ -1,2 +1,5 @@
 # Wikidumps
 *.xml
+
+# Neo4j
+neo4j-community*/*
