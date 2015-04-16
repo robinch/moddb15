@@ -1,5 +1,5 @@
 # Wikidumps
-*.xml
+*.xml-wiki
 
 # Neo4j
 neo4j-community*/*
