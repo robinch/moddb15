@@ -1,0 +1,10 @@
+{
+  "name": "wiki-crawler",
+  "description": "Crawler for a wikipedia xml dump",
+  "author": "Jacob Sievers <jacob@sievers.se>",
+  "dependencies": {
+    "wtf_wikipedia": "^0.1.5",
+    "xml-stream": "^0.4.5"
+  },
+  "engine": "node 0.10.26"
+}
