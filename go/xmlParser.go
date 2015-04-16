@@ -11,15 +11,20 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"time"
 )
+
+var start = time.Now()
 
 // var inputFile = flag.String("infile", "enwiki-latest-pages-articles.xml", "Input file path")
 var indexFile = flag.String("indexfile", "out/article_list.txt", "article list output file")
 
 // var inputFile = flag.String("infile", "../enwiki-20150304-pages-meta-history1.xml", "Input file path")
-var inputFile = flag.String("infile", "../enwiki-20150304-pages-meta-history1.xml", "Input file path")
+var inputFile = flag.String("infile", "../muswiki-20150407-pages-articles-multistream.xml", "Input file path")
 
 var filter, _ = regexp.Compile("^file:.*|^talk:.*|^special:.*|^wikipedia:.*|^wiktionary:.*|^user:.*|^user_talk:.*")
+
+var re = regexp.MustCompile("\\[\\[[A-Za-z0-9\\-\\_\\(\\)]+\\]\\]")
 
 // Here is an example article from the Wikipedia XML dump
 //
@@ -54,7 +59,8 @@ type Page struct {
 type Page struct {
 	Title string `xml:"title"`
 	Id    int    `xml:"id"`
-	// Text  string `xml:"revision>text"`
+	Text  string `xml:"revision>text"`
+	links []string
 }
 
 func CanonicalizeTitle(title string) string {
@@ -110,7 +116,8 @@ func main() {
 				m := filter.MatchString(p.Title)
 				if !m {
 					// WritePage(p.Title, p.Id)
-					fmt.Printf("%s: %d\n", p.Title, p.Id)
+					p.links = re.FindAllString(p.Text, -1)
+					fmt.Printf("%s: %d %s\n", p.Title, p.Id, p.links)
 					total++
 				}
 			}
@@ -120,4 +127,5 @@ func main() {
 	}
 
 	fmt.Printf("Total articles: %d \n", total)
+	fmt.Printf("Time elapsed: %s\n", time.Since(start))
 }

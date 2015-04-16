@@ -1,0 +1,14 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.10/ http://www.mediawiki.org/xml/export-
+	0.10.xsd" version="0.10" xml:lang="en">
+	<page>
+		<title>Apollo 11</title>
+		<redirect title="Foo bar" />
+		<revision>
+			<text xml:space="preserve">
+				{{Infobox Space mission
+				|mission_name=&lt;!--See above--&gt;
+				|insignia=Apollo_11_insignia.png
+			</text>
+		</revision>
+	</page>
+</mediawiki>
