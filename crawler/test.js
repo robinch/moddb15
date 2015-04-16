@@ -1,13 +1,21 @@
 var fs        = require('fs')
-,path    = require('path')
-,XmlStream = require('xml-stream')
-,wtfWiki = require('wtf_wikipedia');
+    ,path    = require('path')
+    ,XmlStream = require('xml-stream')
+    ,wtfWiki = require('wtf_wikipedia');
 
 var stream = fs.createReadStream(path.join(__dirname, 'test.xml'));
 var xml = new XmlStream(stream);
 
-xml.preserve('item', true);
-xml.collect('subitem');
-xml.on('endElement: item', function(item) {
-  console.log(item);
+
+var start = new Date();
+
+xml.preserve('verse', true);
+xml.collect('line');
+xml.on('endElement: verse', function(verse) {
+  console.log(verse);
+});
+
+xml.on('endElement: root', function() {
+  var end = new Date() - start;
+  console.log("Execution time %dms", end);
 });
