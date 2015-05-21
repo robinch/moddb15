@@ -3,22 +3,6 @@ var db = require("seraph")({
   pass: 'fiskis'
 });
 
-// db.save({ name: "Test-Man", age: 40 }, function(err, node) {
-//   if (err) throw err;
-//   console.log("Test-Man inserted.");
-
-//   // db.delete(node, function(err) {
-//   //   if (err) throw err;
-//   //   console.log("Test-Man away!");
-//   // });
-// });
-
-function addNewArticle(article) {
-  db.save(article, 'Article', function(err, node) {
-    console.log('Inserted node with id: ' + article.id);
-  });
-}
-
 function createOrUpdateArticle(properties, title) {
   var cypher= "MERGE (art:Article "
             + "{"
@@ -45,7 +29,7 @@ function createLink(art1, art2, callback) {
             + "{"
             + "title: '" + art2
             + "'})"
-            + "MERGE (art1)-[:LINKS]-(art2) "
+            + "MERGE (art1)-[:LINKS]->(art2) "
             + "RETURN art1, art2";
   db.query(cypher, function(err, result) {
     if (err) throw err;
