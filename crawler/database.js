@@ -17,8 +17,7 @@ function createOrUpdateArticle(properties, title) {
     });
   });
 }
-// + "', wikiId: " + article.wikiId
-// + ", text: '" + article.text
+
 function createLink(art1, art2, callback) {
   console.log('ARTICLES ',art1, art2)
   var cypher= "MATCH (art1:Article "
@@ -70,10 +69,9 @@ testArticles = [
   }
 ];
 
-
+// To clean up graph
+// MATCH (n:Article)-[r]-()
+// DELETE n, r
 testArticles.forEach(function(art) {
   createOrUpdateArticle(art);
-  // art.links.forEach(function(artLink) {
-  //   createLink(art.title, artLink);
-  // });
 });
