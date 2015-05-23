@@ -23,6 +23,24 @@ function createOrUpdateArticles(list) {
   });
 }
 
+function linkArticles(art1, art2){
+  var cypher= "MERGE (art1:Article "
+            + "{"
+            + "wikiId: '" + art1
+            + "', title: '" + art1
+            + "'})"
+            + "MERGE (art2:Article "
+            + "{"
+            + "wikiId: '" + art2
+            + "', title: '" + art2
+            + "'})"
+            + "MERGE (art1)-[r:LINKS]->(art2) "
+            + "RETURN r";
+  db.query(cypher, function(err, result) {
+    if (err) throw err;
+  });
+}
+
 function createLink(art1, list, callback) {
   var art2 = list.shift();
   var cypher= "MATCH (art1:Article "
@@ -81,7 +99,8 @@ testArticles = [
 
 
 module.exports = {
-  createOrUpdateArticles:createOrUpdateArticles
+  createOrUpdateArticles:createOrUpdateArticles,
+  linkArticles:linkArticles
 };
 // To clean up graph
 // MATCH (n:Article)-[r]-()

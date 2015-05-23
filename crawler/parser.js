@@ -41,7 +41,7 @@ function getWikiObject(line){
 	var link = getName(split[2]);
 
 	if(!((title == null )|| (link == null))){
-		return {id:title,links:[link]};
+		return {wikiId:title,link:link};
 		}
 		return null;
 }
@@ -55,7 +55,7 @@ var wikiObj;
 		wikiObj = getWikiObject(line);
 		if(wikiObj != null){
 			console.log(wikiObj)
-			db.createOrUpdateArticles(wikiObj);
+			db.linkArticles(wikiObj.wikiId, wikiObj.link);
 		}
 	  	i++;
 		}else{
