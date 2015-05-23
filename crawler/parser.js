@@ -54,8 +54,8 @@ var wikiObj;
 	  if(i < NR_OF_ARTICLES){
 		wikiObj = getWikiObject(line);
 		if(wikiObj != null){
-			// console.log(wikiObj)
-			db.createOrUpdateArticles(obj)
+			console.log(wikiObj)
+			db.createOrUpdateArticles(wikiObj);
 		}
 	  	i++;
 		}else{
