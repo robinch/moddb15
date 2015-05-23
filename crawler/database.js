@@ -3,23 +3,26 @@ var db = require("seraph")({
   pass: 'fiskis'
 });
 
-function createOrUpdateArticle(properties, title) {
+function createOrUpdateArticles(list) {
+  properties = list.shift();
   var cypher= "MERGE (art:Article "
             + "{"
-            + "title: '" + (title || properties.title)
+            + "title: '" + properties.title
             + "'}"
             + ") RETURN art";
   db.query(cypher, function(err, result) {
     if (err) throw err;
-    console.log("Added ", result);
-    properties.links.forEach(function(link) {
-      createLink(properties.title, link);
+    console.log("Added article", result);
+    createLink(properties.title, properties.links, function() {
+      if(list.length>0) {
+        createOrUpdateArticles(list);
+      }
     });
   });
 }
 
-function createLink(art1, art2, callback) {
-  console.log('ARTICLES ',art1, art2)
+function createLink(art1, list, callback) {
+  var art2 = list.shift();
   var cypher= "MATCH (art1:Article "
             + "{"
             + "title: '" + art1
@@ -28,11 +31,16 @@ function createLink(art1, art2, callback) {
             + "{"
             + "title: '" + art2
             + "'})"
-            + "MERGE (art1)-[:LINKS]->(art2) "
-            + "RETURN art1, art2";
+            + "MERGE (art1)-[r:LINKS]->(art2) "
+            + "RETURN r";
   db.query(cypher, function(err, result) {
     if (err) throw err;
     console.log("Added relation ", result);
+    if(list.length>0) {
+      createLink(art1, list, callback);
+    } else {
+      callback();
+    }
   });
 }
 
@@ -72,6 +80,4 @@ testArticles = [
 // To clean up graph
 // MATCH (n:Article)-[r]-()
 // DELETE n, r
-testArticles.forEach(function(art) {
-  createOrUpdateArticle(art);
-});
+createOrUpdateArticles(testArticles);
