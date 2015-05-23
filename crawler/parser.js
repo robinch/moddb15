@@ -1,7 +1,9 @@
 var fs = require('fs');
 var readline = require('readline');
 var stream = require('stream');
+var db = require('./database');
 
+// File directory here
 var instream = fs.createReadStream('../page_links_sv.nt');
 var outstream = fs.createWriteStream('out.nq');
 var rl = readline.createInterface({
@@ -9,19 +11,7 @@ var rl = readline.createInterface({
 	// output: outstream,
 	terminal: false});
 
-// Source: 
-  // http://werxltd.com/wp/2010/05/13/javascript-implementation
-  // -of-javas-string-hashcode-method/
-String.prototype.hashCode = function() {
-  var hash = 0, i, chr, len;
-  if (this.length == 0) return hash;
-  for (i = 0, len = this.length; i < len; i++) {
-    chr   = this.charCodeAt(i);
-    hash  = ((hash << 5) - hash) + chr;
-    hash |= 0; // Convert to 32bit integer
-  }
-  return hash;
-};
+var NR_OF_ARTICLES = 1000;
 
 
 // Parses the url and return the last
@@ -38,7 +28,8 @@ function getName(s){
 
 /*
 	Takes a from page_links and
-	return an object {title, link}
+	return an object that is
+	configured after database.js
 */
 function getWikiObject(line){
 	// DOES NOT SUPPORT UNICODE
@@ -50,7 +41,7 @@ function getWikiObject(line){
 	var link = getName(split[2]);
 
 	if(!((title == null )|| (link == null))){
-		return {title:title,link:link};
+		return {id:title,links:[link]};
 		}
 		return null;
 }
@@ -60,14 +51,12 @@ var i = 0;
 var wikiObj;
 	rl.on('line', function(line) {
 	  // process line here
-	  if(i<1000){
+	  if(i < NR_OF_ARTICLES){
 		wikiObj = getWikiObject(line);
 		if(wikiObj != null){
-			console.log(wikiObj)
+			// console.log(wikiObj)
+			db.createOrUpdateArticles(obj)
 		}
-	  	outstream.write(line);
-	  	outstream.write('\n');
-	  	// console.log(line);
 	  	i++;
 		}else{
 			close();
@@ -78,7 +67,6 @@ var wikiObj;
 	  // do something on finish here
 	});
 }
-
 function close(){
 	rl.close();	
 }

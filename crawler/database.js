@@ -79,7 +79,11 @@ testArticles = [
   }
 ];
 
+
+module.exports = {
+  createOrUpdateArticles:createOrUpdateArticles
+};
 // To clean up graph
 // MATCH (n:Article)-[r]-()
 // DELETE n, r
-createOrUpdateArticles(testArticles);
+// createOrUpdateArticles(testArticles);
