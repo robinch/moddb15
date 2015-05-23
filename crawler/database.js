@@ -7,15 +7,15 @@ function createOrUpdateArticles(list) {
   properties = list.shift();
   var cypher= "MERGE (art:Article "
             + "{"
-            + "title: '" + properties.title
+            + "wikiId: '" + properties.wikiId
             + "'}) "
             + "SET "
-            + "art.wikiId = " + properties.wikiId
+            + "art.title = '" + properties.title + "'"
             + " RETURN art";
   db.query(cypher, function(err, result) {
     if (err) throw err;
     console.log("Added article", result);
-    createLink(properties.title, properties.links, function() {
+    createLink(properties.wikiId, properties.links, function() {
       if(list.length>0) {
         createOrUpdateArticles(list);
       }
@@ -27,11 +27,11 @@ function createLink(art1, list, callback) {
   var art2 = list.shift();
   var cypher= "MATCH (art1:Article "
             + "{"
-            + "title: '" + art1
+            + "wikiId: '" + art1
             + "'})"
             + "MERGE (art2:Article "
             + "{"
-            + "title: '" + art2
+            + "wikiId: '" + art2
             + "'})"
             + "MERGE (art1)-[r:LINKS]->(art2) "
             + "RETURN r";
@@ -51,31 +51,31 @@ testArticles = [
     title: 'Batman',
     wikiId: 1,
     text: 'Lorem ipsum dolor',
-    links: ['Robin', 'Superman']
+    links: [2, 3]
   },
   {
     title: 'Robin',
     wikiId: 2,
     text: 'Lorem ipsum dolor',
-    links: ['Batman', 'Joker']
+    links: [1, 4]
   },
   {
     title: 'Superman',
     wikiId: 3,
     text: 'Lorem ipsum dolor',
-    links: ['Batman']
+    links: [1]
   },
   {
     title: 'Joker',
     wikiId: 4,
     text: 'Lorem ipsum dolor',
-    links: ['Batman']
+    links: [1]
   },
   {
     title: 'Two-Face',
     wikiId: 5,
     text: 'Lorem ipsum dolor',
-    links: ['Joker']
+    links: [4]
   }
 ];
 
