@@ -11,11 +11,25 @@ var rl = readline.createInterface({
 	terminal: false});
 
 var i = 0;
+
+
+// {
+//     title: 'Batman',
+//     wikiId: 1,
+//     text: 'Lorem ipsum dolor',
+//     links: [2, 3]
+//   }
+
+// function formatLine(line){
+// 	var s = line.split(" ");
+
+// }
+
 function read(){
 
 	rl.on('line', function(line) {
 	  // process line here
-	  if(i<20){
+	  if(i<200){
 	  	outstream.write(line);
 	  	outstream.write('\n');
 	  	// var out = fs.writeFile('out.nq', line+'\n', function(err){
