@@ -8,8 +8,10 @@ function createOrUpdateArticles(list) {
   var cypher= "MERGE (art:Article "
             + "{"
             + "title: '" + properties.title
-            + "'}"
-            + ") RETURN art";
+            + "'}) "
+            + "SET "
+            + "art.wikiId = " + properties.wikiId
+            + " RETURN art";
   db.query(cypher, function(err, result) {
     if (err) throw err;
     console.log("Added article", result);
