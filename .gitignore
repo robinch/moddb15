@@ -7,5 +7,6 @@ neo4j-community*/*
 # Node modules
 crawler/node_modules/**
 
-# .nq file
+# Wikidumps
 *.nq
+*.nt
