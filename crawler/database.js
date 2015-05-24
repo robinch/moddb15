@@ -1,6 +1,6 @@
 var db = require("seraph")({
   user: 'neo4j',
-  pass: 'fiskis'
+  pass: 'tjackballe'
 });
 
 function createOrUpdateArticles(list) {
