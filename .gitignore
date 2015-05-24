@@ -9,3 +9,4 @@ crawler/node_modules/**
 
 # .nq file
 *.nq
+*.nt
